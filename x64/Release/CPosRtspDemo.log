@@ -1,0 +1,44 @@
+﻿  stdafx.cpp
+  CPosRtspDemo.cpp
+  CPosRtspDemoDlg.cpp
+C:\Users\Ivan Lee\Documents\Software project\Machine learning\AI\CPOS\CPosRtspDemo\CPosRtspDemo\CPosRtspDemoDlg.cpp(415,17): warning C4018: '<': signed/unsigned mismatch
+C:\Users\Ivan Lee\Documents\Software project\Machine learning\AI\CPOS\CPosRtspDemo\CPosRtspDemo\CPosRtspDemoDlg.cpp(823,11): warning C4018: '>': signed/unsigned mismatch
+C:\Users\Ivan Lee\Documents\Software project\Machine learning\AI\CPOS\CPosRtspDemo\CPosRtspDemo\CPosRtspDemoDlg.cpp(987,29): warning C4244: '=': conversion from 'ULONGLONG' to 'UINT', possible loss of data
+C:\Users\Ivan Lee\Documents\Software project\Machine learning\AI\CPOS\CPosRtspDemo\CPosRtspDemo\CPosRtspDemoDlg.cpp(949,31): warning C4996: 'inet_addr': Use inet_pton() or InetPton() instead or define _WINSOCK_DEPRECATED_NO_WARNINGS to disable deprecated API warnings
+CPosRtspDemoDlg.obj : error LNK2001: unresolved external symbol av_malloc
+CPosRtspDemoDlg.obj : error LNK2001: unresolved external symbol avformat_alloc_context
+CPosRtspDemoDlg.obj : error LNK2001: unresolved external symbol av_dict_set
+CPosRtspDemoDlg.obj : error LNK2001: unresolved external symbol avformat_open_input
+CPosRtspDemoDlg.obj : error LNK2001: unresolved external symbol av_dict_free
+CPosRtspDemoDlg.obj : error LNK2001: unresolved external symbol avformat_find_stream_info
+CPosRtspDemoDlg.obj : error LNK2001: unresolved external symbol avcodec_find_decoder
+CPosRtspDemoDlg.obj : error LNK2001: unresolved external symbol avcodec_open2
+CPosRtspDemoDlg.obj : error LNK2001: unresolved external symbol av_frame_alloc
+CPosRtspDemoDlg.obj : error LNK2001: unresolved external symbol av_image_get_buffer_size
+CPosRtspDemoDlg.obj : error LNK2001: unresolved external symbol av_image_fill_arrays
+CPosRtspDemoDlg.obj : error LNK2001: unresolved external symbol sws_getContext
+CPosRtspDemoDlg.obj : error LNK2001: unresolved external symbol SDL_CreateWindowFrom
+CPosRtspDemoDlg.obj : error LNK2001: unresolved external symbol SDL_CreateRenderer
+CPosRtspDemoDlg.obj : error LNK2001: unresolved external symbol SDL_CreateTexture
+CPosRtspDemoDlg.obj : error LNK2001: unresolved external symbol av_read_frame
+CPosRtspDemoDlg.obj : error LNK2001: unresolved external symbol av_free_packet
+CPosRtspDemoDlg.obj : error LNK2001: unresolved external symbol avcodec_decode_video2
+CPosRtspDemoDlg.obj : error LNK2001: unresolved external symbol sws_scale
+CPosRtspDemoDlg.obj : error LNK2001: unresolved external symbol SDL_UpdateTexture
+CPosRtspDemoDlg.obj : error LNK2001: unresolved external symbol SDL_RenderClear
+CPosRtspDemoDlg.obj : error LNK2001: unresolved external symbol SDL_RenderCopy
+CPosRtspDemoDlg.obj : error LNK2001: unresolved external symbol SDL_RenderPresent
+CPosRtspDemoDlg.obj : error LNK2001: unresolved external symbol SDL_DestroyTexture
+CPosRtspDemoDlg.obj : error LNK2001: unresolved external symbol SDL_DestroyRenderer
+CPosRtspDemoDlg.obj : error LNK2001: unresolved external symbol SDL_DestroyWindow
+CPosRtspDemoDlg.obj : error LNK2001: unresolved external symbol sws_freeContext
+CPosRtspDemoDlg.obj : error LNK2001: unresolved external symbol av_free
+CPosRtspDemoDlg.obj : error LNK2001: unresolved external symbol av_frame_free
+CPosRtspDemoDlg.obj : error LNK2001: unresolved external symbol avcodec_close
+CPosRtspDemoDlg.obj : error LNK2001: unresolved external symbol avformat_close_input
+CPosRtspDemoDlg.obj : error LNK2001: unresolved external symbol av_register_all
+CPosRtspDemoDlg.obj : error LNK2001: unresolved external symbol avcodec_register_all
+CPosRtspDemoDlg.obj : error LNK2001: unresolved external symbol avformat_network_init
+CPosRtspDemoDlg.obj : error LNK2001: unresolved external symbol SDL_Init
+CPosRtspDemoDlg.obj : error LNK2001: unresolved external symbol SDL_Quit
+C:\Users\Ivan Lee\Documents\Software project\Machine learning\AI\CPOS\CPosRtspDemo\x64\Release\CPosRtspDemo.exe : fatal error LNK1120: 36 unresolved externals
