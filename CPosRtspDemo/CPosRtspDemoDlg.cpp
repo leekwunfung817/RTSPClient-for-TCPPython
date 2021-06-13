@@ -380,7 +380,8 @@ DWORD WINAPI CCPosRtspDemoDlg::PlayerWorkThread(LPVOID lpParam)
 	CCPosRtspDemoDlg* pThis = (CCPosRtspDemoDlg*)lpParam;
 	int res = 0;
 	while (1) {
-		OutputDebugStringW(L"PlayerWorkThread create 1\n");
+		// LOGGER->Log(" Message is:%s Number is:%d", "Capture", _wtoi(strNum));
+		LOGGER->Log("PlayerWorkThread create 1\n");
 
 		do
 		{
@@ -432,14 +433,14 @@ DWORD WINAPI CCPosRtspDemoDlg::PlayerWorkThread(LPVOID lpParam)
 			//av_dict_set(&opts, "timeout", "3000000", 0);//设置超时3秒
 
 
-			OutputDebugStringW(L"PlayerWorkThread create 2\n");
+			LOGGER->Log("PlayerWorkThread create 2\n");
 
-			OutputDebugStringW(L"PlayerWorkThread create 2.1\n");
+			LOGGER->Log("PlayerWorkThread create 2.1\n");
 			// 打开视频流，读取文件头信息到 pFormatCtx 结构体中
 			res = avformat_open_input(&pFormatCtx, chUrl, NULL, &opts);
 			if (res < 0)
 			{
-				//	OutputDebugStringW(L"\nCouldn't open input stream.\n");
+				//	LOGGER->Log("\nCouldn't open input stream.\n");
 				continue;
 			}
 			if (opts) av_dict_free(&opts);
@@ -449,10 +450,10 @@ DWORD WINAPI CCPosRtspDemoDlg::PlayerWorkThread(LPVOID lpParam)
 			res = avformat_find_stream_info(pFormatCtx, NULL);
 			if (res < 0)
 			{
-				//	OutputDebugStringW(L"\nCouldn't find stream information.\n");
+				//	LOGGER->Log("\nCouldn't find stream information.\n");
 				continue;
 			}
-			OutputDebugStringW(L"PlayerWorkThread create 2.2\n");
+			LOGGER->Log("PlayerWorkThread create 2.2\n");
 
 			//从信息数组中查询视频通道
 			//此处直接使用了第一个视频流通道, 可以自己根据需要选择其他视频通道
@@ -467,32 +468,32 @@ DWORD WINAPI CCPosRtspDemoDlg::PlayerWorkThread(LPVOID lpParam)
 			}
 			if (videoindex == -1)//所有通道都不是video, 直接退出
 			{
-				//OutputDebugStringW(L"\nDidn't find a video stream.\n");
+				//LOGGER->Log("\nDidn't find a video stream.\n");
 				res = -1;
 				continue;
 			}
 
-			OutputDebugStringW(L"PlayerWorkThread create 2.3\n");
+			LOGGER->Log("PlayerWorkThread create 2.3\n");
 			// 获取解码器上下文
 			pCodecCtx = pFormatCtx->streams[videoindex]->codec;
 			// 获取解码器
 			pCodec = avcodec_find_decoder(pCodecCtx->codec_id);
 			if (pCodec == NULL)
 			{
-				//OutputDebugStringW(L"\nCodec not found.\n");
+				//LOGGER->Log("\nCodec not found.\n");
 				res = -1;
 				continue;
 			}
-			OutputDebugStringW(L"PlayerWorkThread create 2.4\n");
+			LOGGER->Log("PlayerWorkThread create 2.4\n");
 
 			// 打开解码器
 			res = avcodec_open2(pCodecCtx, pCodec, NULL);
 			if (res < 0)
 			{
-				//OutputDebugStringW(L"\nCould not open codec.\n");
+				//LOGGER->Log("\nCould not open codec.\n");
 				continue;
 			}
-			OutputDebugStringW(L"PlayerWorkThread create 2.5\n");
+			LOGGER->Log("PlayerWorkThread create 2.5\n");
 
 			packet = (AVPacket*)av_malloc(sizeof(AVPacket));//视频网络数据包
 			//为视频帧解码申请内存空间
@@ -515,7 +516,7 @@ DWORD WINAPI CCPosRtspDemoDlg::PlayerWorkThread(LPVOID lpParam)
 				continue;
 			}
 
-			OutputDebugStringW(L"PlayerWorkThread create 2.6\n");
+			LOGGER->Log("PlayerWorkThread create 2.6\n");
 			// 填充 pFrameBGR 中的字段(data、linsize等)(初始化RGB格式转换参数)
 			av_image_fill_arrays(pFrameBGR->data, pFrameBGR->linesize, out_buffer,
 				AV_PIX_FMT_BGR24, pCodecCtx->width, pCodecCtx->height, 1);
@@ -529,7 +530,7 @@ DWORD WINAPI CCPosRtspDemoDlg::PlayerWorkThread(LPVOID lpParam)
 				continue;
 			}
 
-			OutputDebugStringW(L"PlayerWorkThread create 2.7\n");
+			LOGGER->Log("PlayerWorkThread create 2.7\n");
 			//////////////////////////////////////////////////////////////////////////////////////
 
 
@@ -543,7 +544,7 @@ DWORD WINAPI CCPosRtspDemoDlg::PlayerWorkThread(LPVOID lpParam)
 			{
 				continue;
 			}
-			OutputDebugStringW(L"PlayerWorkThread create 2.8\n");
+			LOGGER->Log("PlayerWorkThread create 2.8\n");
 
 			//设置了视频显示窗口, 显示视频到窗口中, 设置显示参数
 			if (pThis->m_callbackPara && pCodecCtx->width > 0)	//需要显示
@@ -560,11 +561,11 @@ DWORD WINAPI CCPosRtspDemoDlg::PlayerWorkThread(LPVOID lpParam)
 				screen = SDL_CreateWindowFrom((void*)(pThis->m_callbackPara));
 				if (!screen)
 				{
-					//OutputDebugStringW(L"\nSDL: could not create window - exiting:%s\n", SDL_GetError());
+					//LOGGER->Log("\nSDL: could not create window - exiting:%s\n", SDL_GetError());
 					res = -1;
 					continue;
 				}
-				OutputDebugStringW(L"PlayerWorkThread create 2.8.1\n");
+				LOGGER->Log("PlayerWorkThread create 2.8.1\n");
 				sdlRenderer = SDL_CreateRenderer(screen, -1, 0);
 				//设置显示的图像格式为BRG24格式(因为前面解码时使用的是BRG24)
 				sdlTexture = SDL_CreateTexture(sdlRenderer, SDL_PIXELFORMAT_BGR24, SDL_TEXTUREACCESS_STREAMING, pCodecCtx->width, pCodecCtx->height);//SDL_PIXELFORMAT_IYUV
@@ -574,7 +575,7 @@ DWORD WINAPI CCPosRtspDemoDlg::PlayerWorkThread(LPVOID lpParam)
 					continue;
 				}
 
-				OutputDebugStringW(L"PlayerWorkThread create 2.8.2\n");
+				LOGGER->Log("PlayerWorkThread create 2.8.2\n");
 				sdlRect.x = 0;
 				sdlRect.y = 0;
 				sdlRect.w = screen_w;
@@ -596,9 +597,9 @@ DWORD WINAPI CCPosRtspDemoDlg::PlayerWorkThread(LPVOID lpParam)
 			pThis->m_dib_picture_size = 0;
 
 
-			//OutputDebugStringW(L"\nPlayerWorkThread create 2.9");
+			//LOGGER->Log("\nPlayerWorkThread create 2.9");
 			//以上准备工作完成, 准备解码视频,转换RGB图像格式,保存到文件
-			OutputDebugStringW(L"\nWhile begin");
+			LOGGER->Log("\nWhile begin");
 			while (1)
 			{
 				//Sleep(1000);
@@ -614,10 +615,10 @@ DWORD WINAPI CCPosRtspDemoDlg::PlayerWorkThread(LPVOID lpParam)
 
 				}
 				*/
-				OutputDebugStringW(L"\nWhile e1");
+				LOGGER->Log("\nWhile e1");
 				while (1)
 				{
-					OutputDebugStringW(L"\nWhile e2.1");
+					LOGGER->Log("\nWhile e2.1");
 					read_frame_result = av_read_frame(pFormatCtx, packet);
 					if (read_frame_result < 0)
 					{
@@ -635,31 +636,31 @@ DWORD WINAPI CCPosRtspDemoDlg::PlayerWorkThread(LPVOID lpParam)
 					{
 						break;
 					}
-					OutputDebugStringW(L"\nWhile e2.2");
+					LOGGER->Log("\nWhile e2.2");
 				}
-				OutputDebugStringW(L"\nWhile e1.1");
+				LOGGER->Log("\nWhile e1.1");
 				if (read_frame_result < 0 || pThis->m_exit_rtsp)
 				{
 					break;
 				}
-				OutputDebugStringW(L"\nWhile e1.2");
+				LOGGER->Log("\nWhile e1.2");
 
 				//Sleep(1000);
 				res = avcodec_decode_video2(pCodecCtx, pFrame, &got_picture, packet);
-				//OutputDebugStringW(L"\nWhile e1.2.1");
+				//LOGGER->Log("\nWhile e1.2.1");
 
 				//Sleep(1000);
 				if (res < 0)//解码错误
 				{
-					OutputDebugStringW(L"\nDecode Error.\n");
+					LOGGER->Log("\nDecode Error.\n");
 					res = -1;
 					break;
 				}
 				// frame_count++;
-				OutputDebugStringW(L"\nWhile e1.3");
+				LOGGER->Log("\nWhile e1.3");
 				if (got_picture)
 				{
-					OutputDebugStringW(L"\nGot picture");
+					LOGGER->Log("\nGot picture");
 					//Sleep(1000);
 					sws_scale(img_convert_ctx, pFrame->data, pFrame->linesize, 0, pCodecCtx->height, pFrameBGR->data, pFrameBGR->linesize);
 
@@ -668,9 +669,9 @@ DWORD WINAPI CCPosRtspDemoDlg::PlayerWorkThread(LPVOID lpParam)
 					if (capture_amount && capture_cnt < capture_amount)
 					{
 					*/
-					OutputDebugStringW(L"\nWhile e1.3.1");
+					LOGGER->Log("\nWhile e1.3.1");
 					//Sleep(1000);
-					//OutputDebugStringW(L"\nWhile e1.3.2");
+					//LOGGER->Log("\nWhile e1.3.2");
 					//COleDateTime timeNow;
 					//timeNow = COleDateTime::GetCurrentTime();
 					// capture_cnt++;
@@ -690,22 +691,22 @@ DWORD WINAPI CCPosRtspDemoDlg::PlayerWorkThread(LPVOID lpParam)
 
 					}
 						*/
-					OutputDebugStringW(L"\nWhile e1.3.3");
+					LOGGER->Log("\nWhile e1.3.3");
 #ifdef USE_SDL
 					if (pThis->m_callbackPara && pCodecCtx->width > 0)
 					{
-						OutputDebugStringW(L"\nWhile e1.3.3.1");
+						LOGGER->Log("\nWhile e1.3.3.1");
 						//SDL---------------------------
 						SDL_UpdateTexture(sdlTexture, NULL, pFrameBGR->data[0], pFrameBGR->linesize[0]);
 						SDL_RenderClear(sdlRenderer);
 						//SDL_RenderCopy( sdlRenderer, sdlTexture, &sdlRect, &sdlRect );  
 						SDL_RenderCopy(sdlRenderer, sdlTexture, NULL, NULL);
 						SDL_RenderPresent(sdlRenderer);
-						OutputDebugStringW(L"\nWhile e1.3.3.2");
+						LOGGER->Log("\nWhile e1.3.3.2");
 					}
 					//SDL End-----------------------
 #endif
-					OutputDebugStringW(L"\nWhile e1.3.4");
+					LOGGER->Log("\nWhile e1.3.4");
 					/*
 
 					if (chUrl[1] == ':')
@@ -713,17 +714,17 @@ DWORD WINAPI CCPosRtspDemoDlg::PlayerWorkThread(LPVOID lpParam)
 						Sleep(33);
 					}
 					*/
-					OutputDebugStringW(L"\nWhile e1.3.5");
+					LOGGER->Log("\nWhile e1.3.5");
 				}
 				//Sleep(1000);
-				OutputDebugStringW(L"\nWhile e1.4");
+				LOGGER->Log("\nWhile e1.4");
 				av_free_packet(packet);
-				//OutputDebugStringW(L"\nWhile e1.5");
+				//LOGGER->Log("\nWhile e1.5");
 				if (pThis->m_exit_rtsp)
 				{
 					break;
 				}
-				OutputDebugStringW(L"\nWhile e1.6");
+				LOGGER->Log("\nWhile e1.6");
 
 				/*
 
@@ -747,7 +748,7 @@ DWORD WINAPI CCPosRtspDemoDlg::PlayerWorkThread(LPVOID lpParam)
 							// free(pFrameBGR->data);
 			}
 			//Sleep(1000);
-			OutputDebugStringW(L"\nWhile e5");
+			LOGGER->Log("\nWhile e5");
 #ifdef USE_SDL
 			if (screen_w)
 			{
@@ -769,7 +770,7 @@ DWORD WINAPI CCPosRtspDemoDlg::PlayerWorkThread(LPVOID lpParam)
 			if (pCodecCtx) avcodec_close(pCodecCtx);
 			if (pFormatCtx) avformat_close_input(&pFormatCtx);
 		} while (1);
-		OutputDebugStringW(L"\nWhile e5.1");
+		LOGGER->Log("\nWhile e5.1");
 
 		memset(pThis->m_dib_buffer, 0, DIB_BUFFER_SIZE * sizeof(unsigned char));
 		pThis->m_dib_picture_size = 0;
