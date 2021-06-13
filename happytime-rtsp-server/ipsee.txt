@@ -939,3 +939,7 @@ Session: 32391
 
 [2021-06-13 20:32:07] : [ERROR] rtsp_tcp_rx, recv ret = -1, rcv_dlen = 0
 [2021-06-13 20:32:07] : [DEBUG] rtsp_close_rua, p_rua = 015B95CC
+[2021-06-14 00:32:21] : [DEBUG] sig_handler, Closing
+[2021-06-14 00:32:22] : [DEBUG] rtsp_rx_thread, exit
+[2021-06-14 00:32:22] : [DEBUG] http_rx_thread, exit
+[2021-06-14 00:32:23] : [DEBUG] http_rx_thread, exit
